@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+<!--
+ * @Descripttion: 
+ * @Author: maple wang
+ * @Date: 2023-02-12 11:27:40
+ * @LastEditors: maple wang
+ * @LastEditTime: 2023-02-13 22:23:22
+-->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## path-to-regexp
 
-In the project directory, you can run:
+## 以下三个函数，虽然函数和参数不同，但是返回的对象结构(history)完全一致
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## history对象
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- action:当前地址栈，最后一次操作的类型
+  - 如果是通过create***History函数创建的history对象，action固定为POP
+  - 如果调用了history的push方法,action变为PUSH
+  - 如果调用了history的replace方法，action变为REPLACE
+- push: 向当前地址栈指针位置，入栈一个地址
+- replace: 替换当前指针指向当前地址
+- go: 控制当前地址栈指针偏移，如果是0,地址不变，如果是负数，则后退指定的步数；如果是正数，则前进指定的步数
+- length:当前栈中的地址数量
+- goForward:相当于go(1)
+- goBack :相当于go(-1)
+- listen:函数，用于监听地址栈中指针的变化
+ - 该函数接收一个函数作为参数,该参数表示地址变化后要做的事情
+   - 函数参数接收两个参数：
+     - location：记录了新的地址
+     - action:进入新地址的方式
+        - POP:指针移动，调用go,goBack,goForward、用户点击浏览器后退按钮
+        - PUSH:调用history.push
+        - REPLACE:调用history.replace
+     - 该函数有一个返回值，返回的是一个函数，用于取消监听
+ - block:是一个函数,用于设置一个阻塞,当页面发生跳转时，会将指定的消息传递给getUserConfirmation,并调用getUserConfirmation函数;该函数返回一个取消函数，调用取消函数可以解除阻塞
+ - createHref:basename+url
 
-### `npm test`
+## createBrowserHistory
+ 创建一个使用浏览器history Api的history对象
+  ## 创建location
+    state处理：
+    ```js
+      var historyState = window.history.state
+    ```
+    1.如果`historyState`没有值，那么state的状态值为undefined
+    2.如果historyState有值
+          类型不是object,state = historyState
+          
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ ## createHashHistory
+ 创建一个使用浏览器hash的history对象
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ ## createMemoryHistory
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ 创建一个使用内存地址栈中的history对象
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
